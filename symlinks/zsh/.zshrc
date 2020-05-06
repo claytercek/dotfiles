@@ -120,3 +120,6 @@ LSCOLORS=exfxcxdxbxegedabagacad
 
 source $ZSH/oh-my-zsh.sh
 
+# allow dotfiles to show up in tab completion
+compinit
+_comp_options+=(globdots)
