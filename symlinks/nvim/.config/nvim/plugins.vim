@@ -88,9 +88,6 @@ Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 " Comments
 Plug 'scrooloose/nerdcommenter'
 
-" Twig
-Plug 'nelsyeung/twig.vim'
-
 " wal colorscheme
 Plug 'dylanaraps/wal.vim'
 
