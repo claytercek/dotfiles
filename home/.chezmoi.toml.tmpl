@@ -1,0 +1,18 @@
+{{/* boolean feature tags */}}
+{{- $ephemeral := promptBoolOnce . "ephemeral" "Is this machine ephemeral, e.g. a cloud or VM instance"}}
+{{- $work := promptBoolOnce . "work" "Is this machine a work machine"}}
+{{- $headed := promptBoolOnce . "headed" "Does this machine have a screen and keyboard"}}
+{{- $personal := promptBoolOnce . "personal" "Should this machine have access to personal secrets"}}
+
+[data]
+    ephemeral = {{ $ephemeral }}
+    work = {{ $work }}
+    headless = {{ not $headed }}
+    personal = {{ $personal }}
+
+
+{{- if and (not $ephemeral) ($headed) }}
+[edit]
+    command = "code"
+    args = ["--wait"]
+{{- end }}
