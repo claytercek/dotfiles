@@ -1,0 +1,45 @@
+"Uninstalling windows 10/11 bloatware"
+
+# Uninstall various Windows bloatware applications using winget
+winget uninstall --accept-source-agreements --nowarn `
+    cortana `
+    skype `
+    "Microsoft.GamingApp_8wekyb3d8bbwe" `
+    "Microsoft.XboxApp_8wekyb3d8bbwe" `
+    "Microsoft.Xbox.TCUI_8wekyb3d8bbwe" `
+    "Microsoft.XboxSpeechToTextOverlay_8wekyb3d8bbwe" `
+    "Microsoft.XboxIdentityProvider_8wekyb3d8bbwe" `
+    "Microsoft.XboxGamingOverlay_8wekyb3d8bbwe" `
+    "Microsoft.XboxGameOverlay_8wekyb3d8bbwe" `
+    "Microsoft.ZuneMusic_8wekyb3d8bbwe" `
+    "Microsoft.WindowsFeedbackHub_8wekyb3d8bbwe" `
+    "Microsoft.Getstarted_8wekyb3d8bbwe" `
+    "9NBLGGH42THS" `
+    "Microsoft.MicrosoftSolitaireCollection_8wekyb3d8bbwe" `
+    "9NBLGGH5FV99" `
+    "Microsoft.BingWeather_8wekyb3d8bbwe" `
+    "microsoft.windowscommunicationsapps_8wekyb3d8bbwe" `
+    "Microsoft.YourPhone_8wekyb3d8bbwe" `
+    "Microsoft.People_8wekyb3d8bbwe" `
+    "Microsoft.Wallet_8wekyb3d8bbwe" `
+    "Microsoft.WindowsMaps_8wekyb3d8bbwe" `
+    "Microsoft.Office.OneNote_8wekyb3d8bbwe" `
+    "Microsoft.MicrosoftOfficeHub_8wekyb3d8bbwe" `
+    "Microsoft.WindowsSoundRecorder_8wekyb3d8bbwe" `
+    "Microsoft.ZuneVideo_8wekyb3d8bbwe" `
+    "Microsoft.MixedReality.Portal_8wekyb3d8bbwe" `
+    "Microsoft.MicrosoftStickyNotes_8wekyb3d8bbwe" `
+    "Microsoft.GetHelp_8wekyb3d8bbwe" `
+    "Microsoft.OneDrive" `
+    "Microsoft.WindowsCalculator_8wekyb3d8bbwe" `
+    "Microsoft.Todos_8wekyb3d8bbwe" `
+    "Microsoft.PowerAutomateDesktop_8wekyb3d8bbwe" `
+    "Microsoft.BingNews_8wekyb3d8bbwe" `
+    "MicrosoftTeams_8wekyb3d8bbwe" `
+    "MicrosoftCorporationII.MicrosoftFamily_8wekyb3d8bbwe" `
+    "MicrosoftCorporationII.QuickAssist_8wekyb3d8bbwe" `
+    "disney+" `
+    "LinkedIn" `
+    "Clipchamp.Clipchamp_yxz26nhyzhsrt"
+
+"Done uninstalling bloatware"

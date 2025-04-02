@@ -13,6 +13,7 @@
 {{ if eq .chezmoi.os "windows" }}
 [core]
 	sshCommand = C:/Windows/System32/OpenSSH/ssh.exe
+	autocrlf = true
 [gpg "ssh"]
 	program = C:\\Users\\clayt\\AppData\\Local\\1Password\\app\\8\\op-ssh-sign.exe
 {{ end }}
