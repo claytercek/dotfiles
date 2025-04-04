@@ -129,8 +129,9 @@ workspaces:
 window_rules:
   - commands: ["set-floating"]
     match:
-      - window_title: { regex: ".*1Password.*" }
-      - window_title: { regex: ".*File Explorer" }
+      - window_title: { regex: "1Password" }
+      - window_title: { regex: "File Explorer" }
+      - window_title: { regex: "Zoom" }
 
 
   - commands: ['ignore']

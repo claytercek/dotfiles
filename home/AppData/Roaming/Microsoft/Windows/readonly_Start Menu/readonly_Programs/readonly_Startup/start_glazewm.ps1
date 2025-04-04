@@ -1,1 +1,0 @@
-glazewm.exe start --config $env:GLAZEWM_CONFIG_PATH
