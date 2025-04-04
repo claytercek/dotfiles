@@ -1,3 +1,0 @@
-{{- if and (eq .chezmoi.os "windows") (not .headless) }}
-komorebic.exe enable-autostart --config $Env:USERPROFILE\\.config\\komorebi\\komorebi.json --whkd
-{{- end }}
