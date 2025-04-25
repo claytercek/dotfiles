@@ -1,21 +1,22 @@
 [user]
 	name = Clay Tercek
 	email = 30105080+claytercek@users.noreply.github.com
-{{ if .personal }}
-	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM3DIziMkKG09RT48ZWu425KQAvWx/9Ref2gGUBg4aXR
-{{ end }}
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
 	required = true
+[core]
+	excludesFile = {{ joinPath .chezmoi.homeDir ".config/git/ignore" | quote }}
 {{ if .personal }}
+[user]
+	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM3DIziMkKG09RT48ZWu425KQAvWx/9Ref2gGUBg4aXR
 {{ if eq .chezmoi.os "windows" }}
 [core]
 	sshCommand = C:/Windows/System32/OpenSSH/ssh.exe
 	autocrlf = true
 [gpg "ssh"]
-	program = C:\\Users\\clayt\\AppData\\Local\\1Password\\app\\8\\op-ssh-sign.exe
+	program = {{ joinPath .chezmoi.homeDir "AppData/Local/1Password/app/8/op-ssh-sign.exe" | quote }}
 {{ end }}
 [gpg]
 	format = ssh

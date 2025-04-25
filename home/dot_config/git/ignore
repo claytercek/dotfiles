@@ -1,0 +1,75 @@
+# OS generated files
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.lnk
+desktop.ini
+$RECYCLE.BIN/
+.DS_Store
+*.swp
+
+# Editor/IDE files
+.idea/
+.vscode/
+*.sublime-*
+.atom/
+.vs/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*~
+
+# Logs and databases
+*.log
+*.sql
+*.sqlite
+
+# Build outputs and dependencies
+node_modules/
+dist/
+build/
+target/
+out/
+.gradle/
+.npm/
+.yarn/
+obj/
+
+# Compiled files
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+*.pyc
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Package files
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
+# Temporary files
+*.tmp
+*.bak
+*.backup
+*.orig
+.temp/
+.cache/
+
+# Agent Instruction files
+.github/copilot-instructions.md
+CLAUDE.md
+.cursorrules
+.cursor/rules/
