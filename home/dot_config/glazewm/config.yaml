@@ -98,7 +98,7 @@ window_effects:
 window_behavior:
   # New windows are created in this state whenever possible.
   # Allowed values: 'tiling', 'floating'.
-  initial_state: 'tiling'
+  initial_state: 'floating'
 
   # Sets the default options for when a new window is created. This also
   # changes the defaults for when the state change commands, like
@@ -109,7 +109,7 @@ window_behavior:
       centered: false
 
       # Whether to show floating windows as always on top.
-      shown_on_top: true
+      shown_on_top: false
 
     fullscreen:
       # Maximize the window if possible. If the window doesn't have a
@@ -127,12 +127,6 @@ workspaces:
   - name: '5'
 
 window_rules:
-  - commands: ["set-floating"]
-    match:
-      - window_title: { regex: "1Password" }
-      - window_title: { regex: "File Explorer" }
-      - window_title: { regex: "Zoom" }
-
 
   - commands: ['ignore']
     match:
@@ -150,6 +144,10 @@ window_rules:
         window_title: { regex: '.*? - Peek' }
       - window_process: { equals: 'Lively' }
         window_class: { regex: 'HwndWrapper' }
+
+      - window_class: { equals: 'UnitySplashWindow' }
+
+      - window_process: { equals: 'Unity Hub' }
 
 binding_modes:
   # When enabled, the focused window can be resized via arrow keys or HJKL.
