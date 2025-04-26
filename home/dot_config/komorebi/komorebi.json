@@ -1,0 +1,36 @@
+{
+  "$schema": "https://raw.githubusercontent.com/LGUG2Z/komorebi/v0.1.36/schema.json",
+  "app_specific_configuration_path": "$Env:KOMOREBI_CONFIG_HOME/applications.json",
+  "window_hiding_behaviour": "Cloak",
+  "cross_monitor_move_behaviour": "Insert",
+  "default_workspace_padding": 8,
+  "default_container_padding": 8,
+  "border_width": 0,
+  "border": false,
+  "monitors": [
+    {
+      "workspaces": [
+        {
+          "name": "I",
+          "layout": "Columns"
+        },
+        {
+          "name": "II",
+          "layout": "Columns"
+        },
+        {
+          "name": "III",
+          "layout": "Columns"
+        },
+        {
+          "name": "IV",
+          "layout": "Columns"
+        },
+        {
+          "name": "V",
+          "layout": "Columns"
+        }
+      ]
+    }
+  ]
+}
