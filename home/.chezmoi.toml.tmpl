@@ -3,15 +3,18 @@
 {{- $work := promptBoolOnce . "work" "Is this machine a work machine"}}
 {{- $headed := promptBoolOnce . "headed" "Does this machine have a screen and keyboard"}}
 {{- $personal := promptBoolOnce . "personal" "Should this machine have access to personal secrets"}}
+{{- $wsl := (and (eq .chezmoi.os "linux") (.chezmoi.kernel.osrelease | lower | contains "microsoft")) -}}
+
 
 [data]
     ephemeral = {{ $ephemeral }}
     work = {{ $work }}
     headless = {{ not $headed }}
     personal = {{ $personal }}
+    wsl = {{ $wsl }}
 
-
-{{- if and (not $ephemeral) ($headed) }}
+{{/* headed machines or WSL use vscode as editor */}}
+{{- if (or (and (not $ephemeral) ($headed)) $wsl) }}
 [edit]
     command = "code"
     args = ["--wait"]

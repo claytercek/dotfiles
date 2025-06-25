@@ -18,6 +18,12 @@
 [gpg "ssh"]
 	program = {{ joinPath .chezmoi.homeDir "AppData/Local/1Password/app/8/op-ssh-sign.exe" | quote }}
 {{ end }}
+{{ if .wsl }}
+[core]
+	sshCommand = ssh.exe
+[gpg "ssh"]
+	program = "/mnt/c/Users/clayt/AppData/Local/1Password/app/8/op-ssh-sign-wsl"
+{{ end }}
 [gpg]
 	format = ssh
 [commit]
@@ -25,7 +31,6 @@
 {{ end }}
 [init]
 	defaultBranch = main
-
 
 [url "git@github.com:"]
   insteadOf = gh:

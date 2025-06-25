@@ -1,3 +1,5 @@
+{{- if eq .chezmoi.os "windows" }}
+
 "Uninstalling windows 10/11 bloatware"
 
 # Uninstall various Windows bloatware applications using winget
@@ -43,3 +45,5 @@ winget uninstall --accept-source-agreements --nowarn `
     "Clipchamp.Clipchamp_yxz26nhyzhsrt"
 
 "Done uninstalling bloatware"
+
+{{- end }}
