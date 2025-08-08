@@ -24,6 +24,10 @@
 [gpg "ssh"]
 	program = "/mnt/c/Users/clayt/AppData/Local/1Password/app/8/op-ssh-sign-wsl"
 {{ end }}
+{{ if eq .chezmoi.os "darwin" }}
+[gpg "ssh"]
+	program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
+{{ end }}
 [gpg]
 	format = ssh
 [commit]

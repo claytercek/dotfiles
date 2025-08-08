@@ -1,0 +1,44 @@
+#!/bin/bash
+
+set -eufo pipefail
+
+{{ $brews := list
+     "ffmpeg"
+     "git"
+     "git-lfs"
+     "ripgrep"
+     "mise"
+-}}
+
+{{ $casks := list
+     "ghostty"
+     "spotify"
+     "visual-studio-code"
+     "vlc"
+     "zen"
+     "raycast"
+-}}
+
+{{ if .personal -}}
+  {{ $casks = concat $casks (list 
+     "1password"
+     "1password-cli"
+     "tailscale"
+  ) -}}
+{{ end -}}
+
+{{ if .work -}}
+  {{ $casks = concat $casks (list 
+     "zoom"
+     "slack"
+  ) -}}
+{{ end -}}
+
+brew bundle --file=/dev/stdin <<EOF
+{{ range ($brews | sortAlpha | uniq) -}}
+brew "{{ . }}"
+{{ end -}}
+{{ range ($casks | sortAlpha | uniq) -}}
+cask "{{ . }}"
+{{ end -}}
+EOF
