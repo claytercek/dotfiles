@@ -12,10 +12,3 @@
     headless = {{ not $headed }}
     personal = {{ $personal }}
     wsl = {{ $wsl }}
-
-{{/* headed machines or WSL use vscode as editor */}}
-{{- if (or (and (not $ephemeral) ($headed)) $wsl) }}
-[edit]
-    command = "code"
-    args = ["--wait"]
-{{- end }}
