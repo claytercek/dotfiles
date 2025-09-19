@@ -106,3 +106,5 @@ fi
 export PATH="/snap/bin:$PATH"
 
 eval "$(mise activate zsh)"
+
+eval "$(starship init zsh)"

@@ -1,0 +1,40 @@
+#!/bin/bash
+
+# Available PCs (format: "name:mac")
+pcs=(
+    "prometheus:18:C0:4D:3C:42:BB"
+)
+
+# Get PC names for selection
+get_names() {
+    printf '%s\n' "${pcs[@]}" | cut -d: -f1 | sort
+}
+
+# Get MAC for a PC name
+get_mac() {
+    for pc in "${pcs[@]}"; do
+        if [[ "${pc%%:*}" == "$1" ]]; then
+            echo "${pc#*:}"
+            return
+        fi
+    done
+}
+
+# Select PC interactively
+select_pc() {
+    get_names | fzf --style=minimal --no-info --height=~100% --reverse --select-1
+}
+
+# Main logic
+pc=$(select_pc)
+[[ -z "$pc" ]] && exit 0
+
+mac=$(get_mac "$pc")
+if [[ -z "$mac" ]]; then
+    echo "Error: PC '$pc' not found"
+    echo "Available: $(get_names | tr '\n' ' ')"
+    exit 1
+fi
+
+echo "Waking $pc ($mac)..."
+ssh helios "wakeonlan $mac"
