@@ -16,13 +16,13 @@
 	sshCommand = C:/Windows/System32/OpenSSH/ssh.exe
 	autocrlf = true
 [gpg "ssh"]
-	program = {{ joinPath .chezmoi.homeDir "AppData/Local/1Password/app/8/op-ssh-sign.exe" | quote }}
+	program = {{ joinPath .chezmoi.homeDir "AppData/Local/Microsoft/WindowsApps/op-ssh-sign.exe" | quote }}
 {{ end }}
 {{ if .wsl }}
 [core]
 	sshCommand = ssh.exe
 [gpg "ssh"]
-	program = "/mnt/c/Users/clayt/AppData/Local/1Password/app/8/op-ssh-sign-wsl"
+	program = "/mnt/c/Users/clayt/AppData/Local/Microsoft/WindowsApps/op-ssh-sign-wsl.exe"
 {{ end }}
 {{ if eq .chezmoi.os "darwin" }}
 [gpg "ssh"]
