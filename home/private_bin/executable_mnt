@@ -1,0 +1,31 @@
+#!/bin/bash
+
+# Available remotes (format: "name|remote_path|local_path")
+remotes=(
+    "Archive|b2-archive:/clay-tercek-archive|~/mnt/Archive/"
+)
+
+# Select remote interactively - show only name but return full entry
+select_remote() {
+    printf '%s\n' "${remotes[@]}" | \
+    fzf --style=minimal --no-info --height=~100% --reverse --select-1 \
+        --with-nth=1 --delimiter='|'
+}
+
+# Main logic
+selected=$(select_remote)
+[[ -z "$selected" ]] && exit 0
+
+# Extract components directly from fzf output
+name=$(echo "$selected" | cut -d'|' -f1)
+remote_path=$(echo "$selected" | cut -d'|' -f2)
+local_path=$(echo "$selected" | cut -d'|' -f3)
+
+# Expand tilde in local path
+local_path="${local_path/#\~/$HOME}"
+
+# Create local mount point if it doesn't exist
+mkdir -p "$local_path"
+
+echo "Mounting $name ($remote_path) to $local_path..."
+rclone mount "$remote_path" "$local_path" --daemon --volname "$name"

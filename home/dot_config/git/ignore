@@ -24,7 +24,6 @@ $RECYCLE.BIN/
 
 # Logs and databases
 *.log
-*.sql
 *.sqlite
 
 # Build outputs and dependencies
