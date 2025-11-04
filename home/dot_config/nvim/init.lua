@@ -27,23 +27,25 @@ map({ 'n', 'v' }, '<leader>c', '1z=')
 
 vim.pack.add({
 	{ src = "https://github.com/vague2k/vague.nvim" },
-	{ src = "https://github.com/stevearc/oil.nvim" },
-	{ src = "https://github.com/echasnovski/mini.pick" },
 	{ src = "https://github.com/nvim-treesitter/nvim-treesitter", version = "main" },
 	{ src = 'https://github.com/neovim/nvim-lspconfig' },
 	{ src = "https://github.com/mason-org/mason.nvim" },
+	{ src = "https://github.com/nvim-lua/plenary.nvim" },
+	{ src = "https://github.com/nvim-telescope/telescope.nvim" },
 })
 
 require "mason".setup()
-require "mini.pick".setup()
-require "oil".setup()
+require "telescope".setup()
 
-map('n', '<leader>f', ":Pick files<CR>")
-map('n', '<leader>h', ":Pick help<CR>")
-map('n', '<leader>e', ":Oil<CR>")
 map('t', '', "")
 map('t', '', "")
 map('n', '<leader>lf', vim.lsp.buf.format)
+
+local builtin = require('telescope.builtin')
+map('n', '<leader>ff', builtin.find_files, { desc = 'Telescope find files' })
+map('n', '<leader>fg', builtin.live_grep, { desc = 'Telescope live grep' })
+map('n', '<leader>fb', builtin.buffers, { desc = 'Telescope buffers' })
+map('n', '<leader>fh', builtin.help_tags, { desc = 'Telescope help tags' })
 
 vim.lsp.enable({ "lua_ls", "svelte" })
 require'nvim-treesitter'.setup({ highlight = { enable = true, }, })
