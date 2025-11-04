@@ -1,0 +1,70 @@
+#!/bin/bash
+
+# Transcodes video to H.264/AAC MP4 for easier sharing
+
+set -e
+
+# Check if ffmpeg is installed
+if ! command -v ffmpeg &> /dev/null; then
+    echo "Error: ffmpeg is not installed. Please install it first."
+    exit 1
+fi
+
+# Check arguments
+if [ $# -eq 0 ]; then
+    echo "Usage: webvid <input_video> [output_path]"
+    echo ""
+    echo "Example: webvid screen_recording.mov"
+    echo ""
+    echo "Converts video to H.264/AAC MP4 while preserving"
+    echo "resolution, framerate, and duration."
+    echo "Output file path defaults to: <original_name>_shared.mp4"
+    echo ""
+    echo "Tip: to batch convert multiple files, use a find or xargs command:"
+    echo "  find . -name \"*.mov\" -exec webvid {} \\;"
+    echo "  ls *.mov | xargs -I {} webvid \"{}\""
+    exit 1
+fi
+
+# Get input file
+input_file="$1"
+
+# Check if input file exists
+if [ ! -f "$input_file" ]; then
+    echo "Error: Input file '$input_file' does not exist."
+    exit 1
+fi
+
+# Generate output filename
+if [ $# -eq 2 ]; then
+    output_file="$2"
+else
+    # Extract filename without extension and add _shared.mp4
+    filename=$(basename "$input_file")
+    name="${filename%.*}"
+    output_file="${name}_shared.mp4"
+fi
+
+# Check if output file already exists
+if [ -f "$output_file" ]; then
+    read -p "Output file '$output_file' already exists. Overwrite? (y/N): " -n 1 -r
+    echo
+    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+        echo "Operation cancelled."
+        exit 1
+    fi
+fi
+
+echo "Converting '$input_file' to '$output_file'..."
+
+# Transcode video to H.264/AAC MP4
+ffmpeg -i "$input_file" \
+    -c:v libx264 \
+    -crf 18 \
+    -preset medium \
+    -c:a aac \
+    -b:a 128k \
+    -movflags +faststart \
+    "$output_file"
+
+echo "Conversion complete: $output_file"
