@@ -70,6 +70,17 @@ __pycache__/
 # Agent Instruction files
 .github/copilot-instructions.md
 CLAUDE.md
+CLAUDE.md.meta
 .cursorrules
+AGENTS.md
 .cursor/rules/
 .claude
+.superpowers
+**/docs/superpowers
+
+.agents
+.worktrees
+
+.tldr
+.tldrignore
+.agents

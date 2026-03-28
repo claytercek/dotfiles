@@ -28,4 +28,4 @@ local_path="${local_path/#\~/$HOME}"
 mkdir -p "$local_path"
 
 echo "Mounting $name ($remote_path) to $local_path..."
-rclone mount "$remote_path" "$local_path" --daemon --volname "$name"
+rclone mount "$remote_path" "$local_path" --daemon --volname "$name" -o local

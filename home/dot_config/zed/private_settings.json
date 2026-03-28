@@ -7,32 +7,95 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "git_panel": {
+    "tree_view": true
+  },
+  "hard_tabs": true,
+  "agent_servers": {
+    "github-copilot": {
+      "type": "registry",
+    },
+  },
+  "tab_size": 2,
+  "use_on_type_format": false,
+  "edit_predictions": {
+    "provider": "copilot",
+  },
+  "ssh_connections": [
+    {
+      "host": "helios",
+      "args": [],
+      "projects": [
+        {
+          "paths": ["/home/clay/docker"],
+        },
+      ],
+    },
+    {
+      "host": "infinity.usbx.me",
+      "username": "kangaroo",
+      "args": [],
+      "projects": [
+        {
+          "paths": ["/home/kangaroo"],
+        },
+        {
+          "paths": ["/home/kangaroo/.apps/nginx"],
+        },
+      ],
+    },
+  ],
+  "git": {
+    "inline_blame": {
+      "padding": 4,
+      "delay_ms": 500,
+    },
+  },
+  "project_panel": {
+    "indent_size": 16.0,
+    "entry_spacing": "standard",
+  },
+  "icon_theme": {
+    "mode": "system",
+    "light": "Symbols Icon Theme",
+    "dark": "Symbols Icon Theme",
+  },
+  "colorize_brackets": true,
+  "sticky_scroll": {
+    "enabled": true,
+  },
   "agent": {
+    "default_profile": "write",
+    "default_model": {
+      "provider": "copilot_chat",
+      "model": "gpt-4.1",
+    },
     "inline_assistant_model": {
       "provider": "copilot_chat",
-      "model": "claude-sonnet-4"
-    }
+      "model": "claude-sonnet-4",
+    },
   },
   "base_keymap": "VSCode",
   "vim_mode": true,
-  "ui_font_size": 14,
-  "buffer_font_size": 13,
+  "buffer_font_size": 14.0,
   "buffer_line_height": {
-    "custom": 1.5
+    "custom": 1.5,
   },
   "terminal": {
-    "font_size": 12
+    "font_size": 13,
   },
-  "ui_font_family": "JetBrains Mono",
-  "ui_font_fallbacks": [".ZedMono"],
+  "format_on_save": "on",
+  // "ui_font_family": "JetBrains Mono",
+  // "ui_font_fallbacks": [".ZedMono"],
   "buffer_font_family": "JetBrains Mono",
   "buffer_font_fallbacks": [".ZedMono"],
   "theme": {
     "mode": "system",
     "light": "One Light",
-    "dark": "Github Dark"
+    "dark": "GitHub Dark",
   },
   "title_bar": {
-    "show_sign_in": false
-  }
+    "show_sign_in": false,
+    "show_user_picture": false,
+  },
 }

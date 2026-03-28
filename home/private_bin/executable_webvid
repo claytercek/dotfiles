@@ -59,7 +59,7 @@ echo "Converting '$input_file' to '$output_file'..."
 
 # Transcode video to H.264/AAC MP4
 ffmpeg -i "$input_file" \
-    -c:v libx264 \
+    -c:v $(if [[ "$OSTYPE" == "darwin"* ]]; then echo "h264_videotoolbox"; else echo "libx264"; fi) \
     -crf 18 \
     -preset medium \
     -c:a aac \

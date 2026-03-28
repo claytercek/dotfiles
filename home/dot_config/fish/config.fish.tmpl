@@ -23,4 +23,15 @@ mise activate fish | source
 alias cat="bat"
 alias ls="eza"
 
-export PATH="$HOME/bin:$HOME/go/bin:$PATH"
+export PATH="$HOME/bin:$HOME/go/bin:$HOME/.local/bin:$PATH"
+
+export GIT_TERMINAL_PROMPT=1
+
+# opencode
+fish_add_path /Users/clay/.opencode/bin
+
+# alias safe="safehouse"
+# alias claude="safe claude --dangerously-skip-permissions"
+# alias claude-work="CLAUDE_CONFIG_DIR=~/.claude-work SAFEHOUSE_ENV_PASS=CLAUDE_CONFIG_DIR SAFEHOUSE_ADD_DIRS=~/.claude-work claude"
+
+alias claude-work="CLAUDE_CONFIG_DIR=~/.claude-work claude"
