@@ -9,11 +9,8 @@
 {{ if ne .chezmoi.os "windows" }}
 .chezmoiscripts/windows/**
 Documents
+AppData
 {{ else }}
 .zshrc
 .config/fish
-AppData
-Documents/WindowsPowerShell
-.chezmoiscripts/windows
-.config/ahk
 {{ end }}

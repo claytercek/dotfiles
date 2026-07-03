@@ -5,8 +5,15 @@
 Invoke-Expression (&starship init powershell)
 # Enable-TransientPrompt
 
-# enable Uutils CoreUtils
-Import-Module CoreUtils -Global -DisableNameChecking
-
 # Enable zoxide
 Invoke-Expression (& { (zoxide.exe init powershell | Out-String) })
+
+# Let microsoft/coreutils win over built-in PowerShell aliases of the same name
+# (PowerShell resolves Alias > Function > Cmdlet > Application, so PATH order alone
+# never lets these .exe's take precedence; the aliases must be removed instead)
+$coreutilsAliases = 'cat','cp','echo','ls','mv','pwd','rm','rmdir','sleep','sort','tee'
+foreach ($name in $coreutilsAliases) {
+    if (Test-Path "Alias:$name") {
+        Remove-Item "Alias:$name" -Force -ErrorAction SilentlyContinue
+    }
+}
