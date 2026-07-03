@@ -20,6 +20,7 @@ $RECYCLE.BIN/
 *.njsproj
 *.sln
 *.sw?
+.zed/
 *~
 
 # Logs and databases
@@ -77,6 +78,7 @@ AGENTS.md
 .claude
 .superpowers
 **/docs/superpowers
+.pi
 
 .agents
 .worktrees
@@ -84,3 +86,8 @@ AGENTS.md
 .tldr
 .tldrignore
 .agents
+CONTEXT.md
+adr/
+.beads
+.sandman
+.afk

@@ -1,0 +1,8 @@
+[tools]
+deno = "latest"
+node = "latest"
+rust = "stable"
+python = "3.11"
+
+[settings]
+idiomatic_version_file_enable_tools = ["node"]
