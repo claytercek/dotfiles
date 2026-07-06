@@ -17,3 +17,7 @@ foreach ($name in $coreutilsAliases) {
         Remove-Item "Alias:$name" -Force -ErrorAction SilentlyContinue
     }
 }
+
+$env:ROSETTA_DIR=".afk\rosetta"
+$env:SLATE_DIR=".afk\slate"
+$env:ROSETTA_SLATE_ROOT=".afk\slate"
