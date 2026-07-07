@@ -1,1 +1,2 @@
 *.dll filter=lfs diff=lfs merge=lfs -text
+home/private_dot_ssh/** -text
