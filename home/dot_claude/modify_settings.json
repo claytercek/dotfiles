@@ -1,0 +1,10 @@
+{{- /* chezmoi:modify-template */ -}}
+{{- $s := .chezmoi.stdin | fromJson -}}
+{{- $env := or (get $s "env") dict -}}
+{{- $_ := set $env "GIT_CONFIG_COUNT" "2" -}}
+{{- $_ := set $env "GIT_CONFIG_KEY_0" "user.signingkey" -}}
+{{- $_ := set $env "GIT_CONFIG_VALUE_0" (joinPath .chezmoi.homeDir ".ssh/agent_signing.pub") -}}
+{{- $_ := set $env "GIT_CONFIG_KEY_1" "gpg.ssh.program" -}}
+{{- $_ := set $env "GIT_CONFIG_VALUE_1" "ssh-keygen" -}}
+{{- $_ := set $s "env" $env -}}
+{{ $s | toPrettyJson }}

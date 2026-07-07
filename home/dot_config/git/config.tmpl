@@ -10,27 +10,32 @@
 	excludesFile = {{ joinPath .chezmoi.homeDir ".config/git/ignore" | quote }}
 {{ if .personal }}
 [user]
-	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM3DIziMkKG09RT48ZWu425KQAvWx/9Ref2gGUBg4aXR
+	signingkey = {{ onepasswordRead "op://Personal/Github/public key" | trim }}
 {{ if eq .chezmoi.os "windows" }}
 [core]
 	sshCommand = C:/Windows/System32/OpenSSH/ssh.exe
 	autocrlf = true
 [gpg "ssh"]
 	program = {{ joinPath .chezmoi.homeDir "AppData/Local/Microsoft/WindowsApps/op-ssh-sign.exe" | quote }}
+	allowedSignersFile = {{ .chezmoi.homeDir }}/.ssh/allowed_signers
 {{ end }}
 {{ if .wsl }}
 [core]
 	sshCommand = ssh.exe
 [gpg "ssh"]
 	program = "/mnt/c/Users/clayt/AppData/Local/Microsoft/WindowsApps/op-ssh-sign-wsl.exe"
+	allowedSignersFile = {{ .chezmoi.homeDir }}/.ssh/allowed_signers
 {{ end }}
 {{ if eq .chezmoi.os "darwin" }}
 [gpg "ssh"]
 	program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
+	allowedSignersFile = {{ .chezmoi.homeDir }}/.ssh/allowed_signers
 {{ end }}
 [gpg]
 	format = ssh
 [commit]
+	gpgsign = true
+[tag]
 	gpgsign = true
 {{ end }}
 [init]
