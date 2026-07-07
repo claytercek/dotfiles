@@ -1,10 +1,15 @@
 {{- /* chezmoi:modify-template */ -}}
 {{- $s := .chezmoi.stdin | fromJson -}}
+{{- $home := .chezmoi.homeDir | replace "\\" "/" -}}
+{{- $signer := printf "%s/.ssh/sign-noagent" $home -}}
+{{- if eq .chezmoi.os "windows" -}}
+{{-   $signer = printf "%s/.ssh/sign-noagent.cmd" $home -}}
+{{- end -}}
 {{- $env := or (get $s "env") dict -}}
 {{- $_ := set $env "GIT_CONFIG_COUNT" "2" -}}
 {{- $_ := set $env "GIT_CONFIG_KEY_0" "user.signingkey" -}}
-{{- $_ := set $env "GIT_CONFIG_VALUE_0" (joinPath .chezmoi.homeDir ".ssh/agent_signing.pub") -}}
+{{- $_ := set $env "GIT_CONFIG_VALUE_0" (printf "%s/.ssh/agent_signing" $home) -}}
 {{- $_ := set $env "GIT_CONFIG_KEY_1" "gpg.ssh.program" -}}
-{{- $_ := set $env "GIT_CONFIG_VALUE_1" "ssh-keygen" -}}
+{{- $_ := set $env "GIT_CONFIG_VALUE_1" $signer -}}
 {{- $_ := set $s "env" $env -}}
 {{ $s | toPrettyJson }}

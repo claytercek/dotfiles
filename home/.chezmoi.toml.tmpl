@@ -5,6 +5,10 @@
 {{- $personal := promptBoolOnce . "personal" "Should this machine have access to personal secrets"}}
 {{- $wsl := (and (eq .chezmoi.os "linux") (.chezmoi.kernel.osrelease | lower | contains "microsoft")) -}}
 
+encryption = "age"
+[age]
+    identity = "~/.config/chezmoi/key.txt"
+    recipient = "age15jfxdl7v7mkefs5y77vl0c2usanj8h0qa6pt265urqn70yhgxqssvrkfp5"
 
 [data]
     ephemeral = {{ $ephemeral }}
