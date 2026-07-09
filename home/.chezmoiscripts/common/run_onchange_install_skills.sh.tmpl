@@ -1,0 +1,76 @@
+#!/bin/sh
+
+# Restore global skills from .skill-lock.json into ~/.agents/skills/.
+#
+# WORKAROUND for the skills CLI lacking a global-lockfile restore command.
+# `experimental_install` reads only the project-scoped skills-lock.json;
+# there is no `experimental_install -g`. Until that lands upstream we
+# rehydrate by re-issuing `skills add <source> -g -s <name> -y` per entry.
+#
+# Tracking:        https://github.com/jdevera/dotagents/issues/1
+# Upstream PR:     https://github.com/vercel-labs/skills/pull/743
+# Upstream issue:  https://github.com/vercel-labs/skills/issues/683
+#
+# Once the upstream PR ships in a `skills` release, delete this file and
+# replace its callers with `npx skills experimental_install -g`.
+
+# .skill-lock.json hash: {{ include "dot_agents/dot_skill-lock.json" | sha256sum }}
+# Included so that whenever that file changes, this script is considered 'changed'
+# and will be re-run by chezmoi.
+
+set -eu
+
+log() {
+  printf '[restore-skills] %s\n' "$*" >&2
+}
+
+if ! command -v npx >/dev/null 2>&1; then
+  printf '%s\n' "npx is required (install Node.js)." >&2
+  exit 1
+fi
+
+LOCK="{{ joinPath .chezmoi.homeDir ".agents" ".skill-lock.json" }}"
+
+if [ ! -f "$LOCK" ]; then
+  log "no .skill-lock.json at $LOCK, nothing to restore"
+  exit 0
+fi
+
+# clean slate
+log "removing existing skills in ~/.agents/skills/"
+rm -rf {{ joinPath .chezmoi.homeDir ".agents" "skills"}}
+
+
+# Snapshot the lockfile before invoking the CLI: every successful
+# `skills add` rewrites .skill-lock.json with a fresh `updatedAt`. We
+# only want the file content side-effect (skills materialised into
+# ~/.agents/skills/), not the timestamp churn — the lockfile is the
+# source of truth we're honouring, not modifying. Restore on EXIT so
+# the snapshot wins even on Ctrl-C or mid-loop failure.
+SNAPSHOT=$(mktemp)
+trap 'cp "$SNAPSHOT" "$LOCK" && rm -f "$SNAPSHOT"' EXIT INT TERM
+cp "$LOCK" "$SNAPSHOT"
+
+# Read the lockfile and re-add each skill globally.
+# The lockfile is a JSON object with skill names as keys and metadata as values.
+#
+# Group skills by source so we can install every skill sharing a source
+# with a single `skills add` invocation:
+#   npx skills add -g -y SOURCE -s NAME1 -s NAME2
+
+while read -r source names <&3; do
+  set -- add -g -y "$source"
+  for name in $names; do
+    set -- "$@" -s "$name"
+  done
+  log "installing from $source: $names"
+  npx skills@1.5.9 "$@"
+done 3<<EOF
+$(jq -r '
+  .skills
+  | to_entries
+  | group_by(.value.source)[]
+  | (.[0].value.source) + " " + ([.[].key] | join(" "))
+' "$LOCK")
+EOF
+
