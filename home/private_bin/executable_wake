@@ -21,4 +21,4 @@ name=$(echo "$selected" | cut -d'|' -f1)
 mac=$(echo "$selected" | cut -d'|' -f2)
 
 echo "Waking $name ($mac)..."
-ssh helios "wakeonlan $mac"
+ssh pi "wakeonlan $mac"
