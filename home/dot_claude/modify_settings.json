@@ -30,6 +30,11 @@
        and run before the classifier */ -}}
 {{- $perm := or (get $s "permissions") dict -}}
 {{- $_ := set $perm "defaultMode" "auto" -}}
+{{- /* skills live outside every project cwd, so reading a skill's companion
+       files (VOICE.md, mocking.md, the *-FORMAT.md set) prompts every time */ -}}
+{{- $allow := or (get $perm "allow") list -}}
+{{- $allow = concat $allow (list "Read(~/.agents/skills/**)" "Read(~/.claude/skills/**)") -}}
+{{- $_ := set $perm "allow" ($allow | uniq) -}}
 {{- $_ := set $s "permissions" $perm -}}
 
 {{- /* auto mode: soft_deny is the tier an explicit user request overrides,
