@@ -14,36 +14,16 @@ if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
   }
 }
 
+# Only packages the managed configs depend on — everything else is
+# installed by hand, not by chezmoi.
 winget install --silent --accept-source-agreements --accept-package-agreements --no-upgrade --disable-interactivity --no-warn `
     "Git.Git" `
     "Neovim.Neovim" `
-    "CoreyButler.NVMforWindows" `
-    "JanDeDobbeleer.OhMyPosh" `
+    "Starship.Starship" `
     "ajeetdsouza.zoxide" `
     "Microsoft.Coreutils" `
-{{- if .personal }}
-    "AgileBits.1Password.CLI" `
-    "Tailscale.Tailscale" `
-{{- end }}
-{{- if not .headless }}
-    "Zen-Team.Zen-Browser" `
-    "Google.Chrome" `
-    "Mozilla.Firefox" `
-    "Notion.Notion" `
-    "Notion.NotionCalendar" `
-    "Spotify.Spotify" `
+{{- if not .server }}
     "Microsoft.VisualStudioCode" `
-    "Python.Python.3.10" `
-    "Discord.Discord" `
-    "Microsoft.PowerToys" `
-    "Valve.Steam" `
-{{- if .personal}}
-    "AgileBits.1Password" `
-{{- end }}
-{{- if .work }}
-    "Zoom.Zoom" `
-    "SlackTechnologies.Slack" `
-{{- end }}
 {{- end }}
     ""
 {{- end }}

@@ -1,47 +1,28 @@
 #!/bin/bash
 
+# Only packages the managed configs depend on — everything else is
+# installed by hand, not by chezmoi.
+
 set -eufo pipefail
 
 {{ $brews := list
-     "ffmpeg"
      "git"
      "git-lfs"
-     "ripgrep"
-     "jq"
-     "mise"
      "fish"
-     "fzf"
-     "eza"
-     "bat"
-     "zoxide"
-     "starship"
      "neovim"
+     "mise"
+     "starship"
+     "zoxide"
+     "bat"
+     "eza"
+     "fzf"
+     "jq"
 -}}
 
 {{ $casks := list
      "ghostty"
-     "spotify"
      "visual-studio-code"
-     "vlc"
-     "zen"
-     "raycast"
-     "zed"
 -}}
-
-{{ if .personal -}}
-  {{ $casks = concat $casks (list 
-     "1password"
-     "1password-cli"
-     "tailscale"
-  ) -}}
-{{ end -}}
-
-{{ if .work -}}
-  {{ $casks = concat $casks (list 
-     "zoom"
-     "slack"
-  ) -}}
-{{ end -}}
 
 brew bundle --file=/dev/stdin <<EOF
 {{ range ($brews | sortAlpha | uniq) -}}
