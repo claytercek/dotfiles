@@ -20,6 +20,11 @@ starship init fish | source
 
 mise activate fish | source
 
+# 1Password shell plugins (file exists only after `op plugin init <cli>`)
+if test -f ~/.config/op/plugins.sh
+    source ~/.config/op/plugins.sh
+end
+
 alias cat="bat"
 alias ls="eza"
 alias vim="nvim"
