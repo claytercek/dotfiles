@@ -1,35 +1,14 @@
 #!/bin/bash
 
-# Only packages the managed configs depend on — everything else is
-# installed by hand, not by chezmoi.
+# Package lists live in .chezmoidata/packages.toml.
 
 set -eufo pipefail
 
-{{ $brews := list
-     "git"
-     "git-lfs"
-     "fish"
-     "neovim"
-     "mise"
-     "starship"
-     "zoxide"
-     "bat"
-     "eza"
-     "fzf"
-     "jq"
--}}
-
-{{ $casks := list
-     "1password-cli"
-     "ghostty"
-     "visual-studio-code"
--}}
-
 brew bundle --file=/dev/stdin <<EOF
-{{ range ($brews | sortAlpha | uniq) -}}
+{{ range .packages.darwin.brews -}}
 brew "{{ . }}"
 {{ end -}}
-{{ range ($casks | sortAlpha | uniq) -}}
+{{ range .packages.darwin.casks -}}
 cask "{{ . }}"
 {{ end -}}
 EOF

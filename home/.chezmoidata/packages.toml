@@ -1,0 +1,36 @@
+# Only packages the managed configs depend on — everything else is
+# installed by hand, not by chezmoi.
+
+[packages.darwin]
+brews = [
+    "bat",
+    "eza",
+    "fish",
+    "fzf",
+    "git",
+    "git-lfs",
+    "jq",
+    "mise",
+    "neovim",
+    "starship",
+    "zoxide",
+]
+casks = [
+    "1password-cli",
+    "ghostty",
+    "visual-studio-code",
+]
+
+[packages.windows]
+winget = [
+    "Git.Git",
+    "Microsoft.Coreutils",
+    "Neovim.Neovim",
+    "Starship.Starship",
+    "ajeetdsouza.zoxide",
+]
+# skipped on servers
+winget_workstation = [
+    "AgileBits.1Password.CLI",
+    "Microsoft.VisualStudioCode",
+]

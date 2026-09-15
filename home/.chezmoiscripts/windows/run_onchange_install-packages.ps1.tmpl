@@ -14,17 +14,15 @@ if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
   }
 }
 
-# Only packages the managed configs depend on — everything else is
-# installed by hand, not by chezmoi.
+# Package lists live in .chezmoidata/packages.toml.
 winget install --silent --accept-source-agreements --accept-package-agreements --no-upgrade --disable-interactivity --no-warn `
-    "Git.Git" `
-    "Neovim.Neovim" `
-    "Starship.Starship" `
-    "ajeetdsouza.zoxide" `
-    "Microsoft.Coreutils" `
+{{- range .packages.windows.winget }}
+    "{{ . }}" `
+{{- end }}
 {{- if not .server }}
-    "Microsoft.VisualStudioCode" `
-    "AgileBits.1Password.CLI" `
+{{- range .packages.windows.winget_workstation }}
+    "{{ . }}" `
+{{- end }}
 {{- end }}
     ""
 {{- end }}
