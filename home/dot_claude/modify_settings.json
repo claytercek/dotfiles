@@ -18,11 +18,21 @@
 {{- $_ := set $attr "sessionUrl" false -}}
 {{- $_ := set $s "attribution" $attr -}}
 
-{{- /* permissions: bypass mode; allowlist is moot under bypass, keep it empty */ -}}
+{{- /* permissions: auto mode; machine-local allow/ask/deny rules survive
+       and run before the classifier */ -}}
 {{- $perm := or (get $s "permissions") dict -}}
-{{- $_ := set $perm "defaultMode" "bypassPermissions" -}}
-{{- $_ := set $perm "allow" list -}}
+{{- $_ := set $perm "defaultMode" "auto" -}}
 {{- $_ := set $s "permissions" $perm -}}
+
+{{- /* auto mode: soft_deny is the tier an explicit user request overrides,
+       so asked-for PRs/pushes sail through and freelance ones get caught.
+       environment entries from /auto-mode-setup are machine-local and pass
+       through untouched */ -}}
+{{- $auto := or (get $s "autoMode") dict -}}
+{{- $softDeny := or (get $auto "soft_deny") list -}}
+{{- $softDeny = concat $softDeny (list "Pushing branches and creating pull requests require an explicit user request in the conversation") -}}
+{{- $_ := set $auto "soft_deny" ($softDeny | uniq) -}}
+{{- $_ := set $s "autoMode" $auto -}}
 
 {{- /* sandbox: on, auto-allow bash, union required write paths and sockets with local ones */ -}}
 {{- $sb := or (get $s "sandbox") dict -}}
