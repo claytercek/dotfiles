@@ -1,0 +1,19 @@
+{{- /* Community skills from .chezmoidata/skills.toml, one pinned GitHub
+       tarball per skill, extracted to ~/.agents/skills/<name>. */ -}}
+{{- range $repo, $src := .skills }}
+{{-   range $name, $path := $src.paths }}
+{{-     $depth := 1 }}
+{{-     if ne $path "." }}{{ $depth = add 1 (len (splitList "/" $path)) }}{{ end }}
+[".agents/skills/{{ $name }}"]
+    type = "archive"
+    url = "https://github.com/{{ $repo }}/archive/{{ $src.rev }}.tar.gz"
+    exact = true
+    stripComponents = {{ $depth }}
+{{-     if not (regexMatch "^[0-9a-f]{40}$" $src.rev) }}
+    refreshPeriod = "168h"
+{{-     end }}
+{{-     if ne $path "." }}
+    include = ["*/{{ $path }}/**"]
+{{-     end }}
+{{   end }}
+{{- end -}}

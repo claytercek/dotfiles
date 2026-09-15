@@ -1,0 +1,38 @@
+# Community agent skills, fetched by .chezmoiexternal.toml.tmpl into
+# ~/.agents/skills/<name>. Personal skills live in dot_agents/ directly.
+#
+# One table per source repo. `rev` is a commit, or a branch/HEAD to
+# track the latest (refetched weekly; `chezmoi apply -R` forces it).
+# `paths` maps the skill name to its directory in the repo ("." for
+# the repo root).
+
+[skills."blader/humanizer"]
+rev = "9862685f575c65a8247f90369951df1b3416e3d6"
+paths = { humanizer = "." }
+
+[skills."cursor/plugins"]
+rev = "c1c0a32802223f4be824112dd83d33ad29a8b26c"
+paths = { thermo-nuclear-code-quality-review = "cursor-team-kit/skills/thermo-nuclear-code-quality-review" }
+
+[skills."drcathicks/learning-opportunities"]
+rev = "3862d2eb6e93427f1f163a54360d11ef943b88b7"
+paths = { learning-opportunities = "learning-opportunities/skills/learning-opportunities" }
+
+[skills."github/awesome-copilot"]
+rev = "fb4eb04fcbd30de50052b1155d81167393dfb5aa"
+paths = { documentation-writer = "skills/documentation-writer" }
+
+[skills."juliusbrussee/caveman"]
+rev = "ed37ab132393899c129bbeef2b9743ff3af19c68"
+paths = { caveman-commit = "skills/caveman-commit" }
+
+[skills."mattpocock/skills"]
+rev = "959a8e9f1edc3adbe2f7e3054bb6fbefa6696260"
+[skills."mattpocock/skills".paths]
+code-review = "skills/engineering/code-review"
+handoff = "skills/productivity/handoff"
+implement = "skills/engineering/implement"
+prototype = "skills/engineering/prototype"
+research = "skills/engineering/research"
+tdd = "skills/engineering/tdd"
+teach = "skills/productivity/teach"
