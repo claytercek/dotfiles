@@ -1,0 +1,24 @@
+{{ if .server -}}
+#!/bin/sh
+
+# Servers sign commits with a per-host key generated here, never the
+# shared workstation key. The private key never leaves this machine;
+# its .pub must be added to GitHub (as a signing key) and to the
+# allowed_signers file in the chezmoi repo.
+
+set -eu
+
+key="$HOME/.ssh/signing"
+
+if [ ! -f "$key" ]; then
+  mkdir -p "$HOME/.ssh"
+  chmod 700 "$HOME/.ssh"
+  ssh-keygen -t ed25519 -f "$key" -N "" -C "$(hostname)-signing"
+  echo ""
+  echo "Generated per-host signing key. Add this public key to GitHub"
+  echo "(Settings > SSH and GPG keys > New SSH key > type: Signing Key)"
+  echo "and to allowed_signers in the chezmoi repo:"
+  echo ""
+  cat "$key.pub"
+fi
+{{ end -}}

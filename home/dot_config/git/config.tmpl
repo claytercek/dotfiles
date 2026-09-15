@@ -8,7 +8,8 @@
 	required = true
 [core]
 	excludesFile = {{ joinPath .chezmoi.homeDir ".config/git/ignore" | quote }}
-{{ if not .server }}
+{{/* signing is enforced everywhere: workstations get the shared key
+     via chezmoi, servers generate a per-host key at the same path */}}
 {{- $home := .chezmoi.homeDir | replace "\\" "/" }}
 [user]
 	signingkey = {{ printf "%s/.ssh/signing" $home | quote }}
@@ -31,7 +32,6 @@
 {{ if .wsl }}
 [core]
 	sshCommand = ssh.exe
-{{ end }}
 {{ end }}
 [init]
 	defaultBranch = main
