@@ -12,4 +12,9 @@
 {{- $_ := set $env "GIT_CONFIG_KEY_1" "gpg.ssh.program" -}}
 {{- $_ := set $env "GIT_CONFIG_VALUE_1" $signer -}}
 {{- $_ := set $s "env" $env -}}
+{{- $attr := or (get $s "attribution") dict -}}
+{{- $_ := set $attr "commit" "" -}}
+{{- $_ := set $attr "pr" "" -}}
+{{- $_ := set $attr "sessionUrl" false -}}
+{{- $_ := set $s "attribution" $attr -}}
 {{ $s | toPrettyJson }}

@@ -42,6 +42,14 @@ if they don't exist in any output that leaves this machine: never mention
 or reference them in code comments, documentation, commit messages, PR
 descriptions, or anywhere else.
 
+## Agent usage is invisible
+
+NEVER include a co-author attribution for an agent. Never mention 
+'generated with' or 'built with' in a commit, PR, or any other shared 
+messaging. Never reference the agent session in PRs or commit trailers.
+
+The agent is just a tool for implementation, not a point of reference.
+
 ## Scope and design
 
 - Don't preserve backwards compatibility when changing APIs unless
