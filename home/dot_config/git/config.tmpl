@@ -9,34 +9,29 @@
 [core]
 	excludesFile = {{ joinPath .chezmoi.homeDir ".config/git/ignore" | quote }}
 {{ if .personal }}
+{{- $home := .chezmoi.homeDir | replace "\\" "/" }}
 [user]
-	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM3DIziMkKG09RT48ZWu425KQAvWx/9Ref2gGUBg4aXR
-{{ if eq .chezmoi.os "windows" }}
-[core]
-	sshCommand = C:/Windows/System32/OpenSSH/ssh.exe
-	autocrlf = true
-[gpg "ssh"]
-	program = {{ joinPath .chezmoi.homeDir "AppData/Local/Microsoft/WindowsApps/op-ssh-sign.exe" | quote }}
-	allowedSignersFile = {{ .chezmoi.homeDir }}/.ssh/allowed_signers
-{{ end }}
-{{ if .wsl }}
-[core]
-	sshCommand = ssh.exe
-[gpg "ssh"]
-	program = "/mnt/c/Users/clayt/AppData/Local/Microsoft/WindowsApps/op-ssh-sign-wsl.exe"
-	allowedSignersFile = {{ .chezmoi.homeDir }}/.ssh/allowed_signers
-{{ end }}
-{{ if eq .chezmoi.os "darwin" }}
-[gpg "ssh"]
-	program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
-	allowedSignersFile = {{ .chezmoi.homeDir }}/.ssh/allowed_signers
-{{ end }}
+	signingkey = {{ printf "%s/.ssh/signing" $home | quote }}
 [gpg]
 	format = ssh
+[gpg "ssh"]
+	allowedSignersFile = {{ printf "%s/.ssh/allowed_signers" $home | quote }}
+{{ if eq .chezmoi.os "windows" }}
+	program = {{ printf "%s/.ssh/sign-noagent.cmd" $home | quote }}
+{{ end }}
 [commit]
 	gpgsign = true
 [tag]
 	gpgsign = true
+{{ if eq .chezmoi.os "windows" }}
+[core]
+	sshCommand = C:/Windows/System32/OpenSSH/ssh.exe
+	autocrlf = true
+{{ end }}
+{{ if .wsl }}
+[core]
+	sshCommand = ssh.exe
+{{ end }}
 {{ end }}
 [init]
 	defaultBranch = main
