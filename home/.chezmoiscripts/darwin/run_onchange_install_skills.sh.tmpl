@@ -22,7 +22,7 @@
 # Re-run triggers (chezmoi re-runs this script when these hashes change):
 # .skill-lock.json hash: {{ include "dot_agents/dot_skill-lock.json" | sha256sum }}
 # my-skills hashes (known limitation: only *.md files are hashed):
-{{- range glob (joinPath .chezmoi.sourceDir "dot_agents/my-skills/**/*.md") }}
+{{- range glob (joinPath .chezmoi.sourceDir "dot_agents/exact_my-skills/**/*.md") }}
 # {{ . }}: {{ include . | sha256sum }}
 {{- end }}
 
