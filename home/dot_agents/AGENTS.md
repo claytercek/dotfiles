@@ -59,6 +59,16 @@ The agent is just a tool for implementation, not a point of reference.
   adding code for it. Prefer a smaller codebase with stated limitations
   over a larger one that handles everything.
 
+## Temp files
+
+- Write scratch files under `$TMPDIR`, never a hardcoded path like
+  `/tmp/foo`. The sandbox grants write access to `$TMPDIR` and the project
+  directory; a literal `/tmp/...` path is outside both and fails with
+  "operation not permitted".
+- This applies inside heredocs and inline `python3`/`uv run` scripts too —
+  that's where it usually slips through, because the path is buried in a
+  string rather than written as a shell redirect.
+
 ## Subagent usage
 
 - Delegate to subagents any task that would generate a lot of intermediate
