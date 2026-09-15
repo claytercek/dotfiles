@@ -1,17 +1,74 @@
 {{- /* chezmoi:modify-template */ -}}
 {{- $s := .chezmoi.stdin | fromJson -}}
+{{- $home := .chezmoi.homeDir -}}
+
+{{- /* env: strip git identity overrides, pin traffic flags */ -}}
 {{- $env := or (get $s "env") dict -}}
 {{- range list "GIT_CONFIG_COUNT" "GIT_CONFIG_KEY_0" "GIT_CONFIG_VALUE_0" "GIT_CONFIG_KEY_1" "GIT_CONFIG_VALUE_1" -}}
 {{-   $_ := unset $env . -}}
 {{- end -}}
-{{- if $env -}}
-{{-   $_ := set $s "env" $env -}}
-{{- else -}}
-{{-   $_ := unset $s "env" -}}
-{{- end -}}
+{{- $_ := set $env "DISABLE_TELEMETRY" "1" -}}
+{{- $_ := set $env "DISABLE_ERROR_REPORTING" "1" -}}
+{{- $_ := set $s "env" $env -}}
+
+{{- /* attribution: none */ -}}
 {{- $attr := or (get $s "attribution") dict -}}
 {{- $_ := set $attr "commit" "" -}}
 {{- $_ := set $attr "pr" "" -}}
 {{- $_ := set $attr "sessionUrl" false -}}
 {{- $_ := set $s "attribution" $attr -}}
+
+{{- /* permissions: bypass mode; allowlist is moot under bypass, keep it empty */ -}}
+{{- $perm := or (get $s "permissions") dict -}}
+{{- $_ := set $perm "defaultMode" "bypassPermissions" -}}
+{{- $_ := set $perm "allow" list -}}
+{{- $_ := set $s "permissions" $perm -}}
+
+{{- /* sandbox: on, auto-allow bash, union required write paths and sockets with local ones */ -}}
+{{- $sb := or (get $s "sandbox") dict -}}
+{{- $_ := set $sb "enabled" true -}}
+{{- $_ := set $sb "autoAllowBashIfSandboxed" true -}}
+{{- $fs := or (get $sb "filesystem") dict -}}
+{{- $write := or (get $fs "allowWrite") list -}}
+{{- $write = concat $write (list (joinPath $home ".npm") (joinPath $home ".cache") (joinPath $home ".config" "op")) -}}
+{{- if eq .chezmoi.os "darwin" -}}
+{{-   $write = concat $write (list (joinPath $home "Library" "Application Support" "rtk") (joinPath $home "Library" "Caches" "go-build")) -}}
+{{- end -}}
+{{- $_ := set $fs "allowWrite" ($write | uniq) -}}
+{{- $_ := set $sb "filesystem" $fs -}}
+{{- if eq .chezmoi.os "darwin" -}}
+{{-   $net := or (get $sb "network") dict -}}
+{{-   $sock := or (get $net "allowUnixSockets") list -}}
+{{-   $opdir := joinPath $home "Library" "Group Containers" "2BUA8C4S2C.com.1password" "t" -}}
+{{-   $sock = concat $sock (list (joinPath $opdir "agent.sock") (joinPath $opdir "s.sock")) -}}
+{{-   $_ := set $net "allowUnixSockets" ($sock | uniq) -}}
+{{-   $_ := set $sb "network" $net -}}
+{{- end -}}
+{{- $_ := set $s "sandbox" $sb -}}
+
+{{- /* notifications */ -}}
+{{- $_ := set $s "agentPushNotifEnabled" true -}}
+{{- $_ := set $s "inputNeededNotifEnabled" true -}}
+{{- $_ := set $s "preferredNotifChannel" "auto" -}}
+{{- $_ := set $s "awaySummaryEnabled" false -}}
+{{- $_ := set $s "promptSuggestionEnabled" false -}}
+
+{{- /* plan mode, remote control, worktrees, misc features */ -}}
+{{- $_ := set $s "showClearContextOnPlanAccept" true -}}
+{{- $_ := set $s "remoteControlAtStartup" true -}}
+{{- $_ := set $s "autoDreamEnabled" false -}}
+{{- $_ := set $s "enableArtifact" false -}}
+{{- $wt := or (get $s "worktree") dict -}}
+{{- $_ := set $wt "baseRef" "fresh" -}}
+{{- $_ := set $s "worktree" $wt -}}
+
+{{- /* updates, checkpointing */ -}}
+{{- $_ := set $s "autoUpdatesChannel" "stable" -}}
+{{- $_ := set $s "fileCheckpointingEnabled" true -}}
+
+{{- /* statusline (posix shells only) */ -}}
+{{- if ne .chezmoi.os "windows" -}}
+{{-   $_ := set $s "statusLine" (dict "type" "command" "command" (joinPath $home ".claude" "statusline.sh")) -}}
+{{- end -}}
+
 {{ $s | toPrettyJson }}
