@@ -48,9 +48,11 @@
 {{- $_ := set $sb "autoAllowBashIfSandboxed" true -}}
 {{- $fs := or (get $sb "filesystem") dict -}}
 {{- $write := or (get $fs "allowWrite") list -}}
-{{- $write = concat $write (list (joinPath $home ".npm") (joinPath $home ".cache") (joinPath $home ".config" "op")) -}}
+{{- /* mise rewrites tracked-configs on any shimmed node/npm/python call, so
+       every toolchain command trips the sandbox without this */ -}}
+{{- $write = concat $write (list (joinPath $home ".npm") (joinPath $home ".cache") (joinPath $home ".config" "op") (joinPath $home ".local" "state" "mise")) -}}
 {{- if eq .chezmoi.os "darwin" -}}
-{{-   $write = concat $write (list (joinPath $home "Library" "Application Support" "rtk") (joinPath $home "Library" "Caches" "go-build")) -}}
+{{-   $write = concat $write (list (joinPath $home "Library" "Application Support" "rtk") (joinPath $home "Library" "Caches" "go-build") (joinPath $home "Library" "Caches" "mise") (joinPath $home "Library" "Preferences" "netlify")) -}}
 {{- end -}}
 {{- $_ := set $fs "allowWrite" ($write | uniq) -}}
 {{- $_ := set $sb "filesystem" $fs -}}
@@ -60,6 +62,9 @@
 {{-   $opdir := joinPath $home "Library" "Group Containers" "2BUA8C4S2C.com.1password" "t" -}}
 {{-   $sock = concat $sock (list (joinPath $opdir "agent.sock") (joinPath $opdir "s.sock")) -}}
 {{-   $_ := set $net "allowUnixSockets" ($sock | uniq) -}}
+{{- /* seatbelt denies bind(2), so no dev server can start under the sandbox
+       and every start/poll/kill loop has to break out of it */ -}}
+{{-   $_ := set $net "allowLocalBinding" true -}}
 {{-   $_ := set $sb "network" $net -}}
 {{- end -}}
 {{- $_ := set $s "sandbox" $sb -}}
