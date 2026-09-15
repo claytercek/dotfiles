@@ -1,8 +1,5 @@
-{{/* boolean feature tags */}}
-{{- $ephemeral := promptBoolOnce . "ephemeral" "Is this machine ephemeral, e.g. a cloud or VM instance"}}
-{{- $work := promptBoolOnce . "work" "Is this machine a work machine"}}
-{{- $headed := promptBoolOnce . "headed" "Does this machine have a screen and keyboard"}}
-{{- $personal := promptBoolOnce . "personal" "Should this machine have access to personal secrets"}}
+{{/* one axis: workstations get secrets + GUI tooling, servers get neither */}}
+{{- $server := promptBoolOnce . "server" "Is this machine a headless server"}}
 {{- $wsl := (and (eq .chezmoi.os "linux") (.chezmoi.kernel.osrelease | lower | contains "microsoft")) -}}
 
 encryption = "age"
@@ -11,10 +8,7 @@ encryption = "age"
     recipient = "age15jfxdl7v7mkefs5y77vl0c2usanj8h0qa6pt265urqn70yhgxqssvrkfp5"
 
 [data]
-    ephemeral = {{ $ephemeral }}
-    work = {{ $work }}
-    headless = {{ not $headed }}
-    personal = {{ $personal }}
+    server = {{ $server }}
     wsl = {{ $wsl }}
 
 [merge]
@@ -24,8 +18,7 @@ args = [
     '{{ "cp {{ .Target | quote }} {{ printf \"%s.base\" .Target | quote }} && code --new-window --wait --merge {{ .Destination | quote }} {{ .Target | quote }} {{ printf \"%s.base\" .Target | quote }} {{ .Source | quote }}" }}',
 ]
 
-{{/* headed machines or WSL use vscode as editor */}}
-{{- if (or (and (not $ephemeral) ($headed)) $wsl) }}
+{{- if not $server }}
 [edit]
     command = "code"
     args = ["--wait", "-n"]

@@ -19,3 +19,7 @@ AppData
 {{ if eq .chezmoi.os "windows" }}
 .claude/statusline.sh
 {{ end }}
+
+{{ if .server }}
+.ssh/signing
+{{ end }}

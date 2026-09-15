@@ -8,7 +8,7 @@
 	required = true
 [core]
 	excludesFile = {{ joinPath .chezmoi.homeDir ".config/git/ignore" | quote }}
-{{ if .personal }}
+{{ if not .server }}
 {{- $home := .chezmoi.homeDir | replace "\\" "/" }}
 [user]
 	signingkey = {{ printf "%s/.ssh/signing" $home | quote }}
