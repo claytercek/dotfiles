@@ -9,6 +9,14 @@
 {{- end -}}
 {{- $_ := set $env "DISABLE_TELEMETRY" "1" -}}
 {{- $_ := set $env "DISABLE_ERROR_REPORTING" "1" -}}
+{{- /* Go binaries (gh, terraform, ...) delegate TLS chain validation to
+       Security.framework, which needs trustd over mach -- seatbelt blocks that
+       and the handshake dies with OSStatus -26276. Verify against the system
+       PEM bundle in-process instead, the way curl already does. Costs us any
+       root living only in the login keychain (mkcert, Charles). */ -}}
+{{- if eq .chezmoi.os "darwin" -}}
+{{-   $_ := set $env "SSL_CERT_FILE" "/etc/ssl/cert.pem" -}}
+{{- end -}}
 {{- $_ := set $s "env" $env -}}
 
 {{- /* attribution: none */ -}}
